@@ -69,10 +69,10 @@ export default {
   },
   methods: {
     isAnswerAuthor(answer) {
-      return answer.author._id.toString() ==
+      return (
+        answer.author._id.toString() ==
         localStorage.getItem("userId").toString()
-        ? true
-        : false;
+      );
     },
     editThisAnswer(answer) {
       this.editForm = answer._id;

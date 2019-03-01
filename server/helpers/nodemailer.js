@@ -1,21 +1,23 @@
 require('dotenv').config()
 const nodemailer = require('nodemailer')
 
-function nodeMail(email) {
+function nodeMail(emailAdress, emailTitle,  emailMessage,) {
   var transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-      user: "dityo.hario@gmail.com",
+      user: process.env.EMAIL,
       pass: process.env.EMAIL_PWD
     }
   });
 
   var mailOptions = {
-    from: "dityo.hario@gmail.com",
-    to: email,
-    subject: "Weekend Email",
+    from: process.env.EMAIL,
+    to: emailAdress,
+    subject: "Top Question For You To Start Your Week",
     html:
-      `Check out WoverFlow!`
+      `<h1>${emailTitle}</h1>
+      <h6>${emailDescription}</h6>
+      `
   }
 
   transporter.sendMail(mailOptions, function (error, info) {

@@ -2,7 +2,7 @@ const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const { jwtSign } = require('../helpers/jwt')
 
-class userController {
+class UserController {
   static register(req, res, next) {
     User
       .create({
@@ -95,4 +95,4 @@ class userController {
 }
 
 
-module.exports = userController
+module.exports = UserController

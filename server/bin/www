@@ -7,6 +7,11 @@
 var app = require('../app');
 var debug = require('debug')('server:server');
 var http = require('http');
+var cron = require('node-cron')
+var nodeMail = require('../helpers/nodemailer')
+const kue = require('kue')
+const User = require('../models/User')
+const Question = require('../models/Question')
 
 /**
  * Get port from environment and store in Express.
@@ -33,30 +38,34 @@ server.on('listening', onListening);
  * Normalize a port into a number, string, or false.
  */
 
-var cron = require('node-cron')
-var nodeMail = require('../helpers/nodemailer')
-const kue = require('kue')
-const User = require('../models/User')
 
 const queue = kue.createQueue()
 const monday = `0 7 * * 1`
 
 
 cron.schedule(monday, () => {
-  User
+  Question
     .find()
-    .then(users => {
-      users.forEach(user => {
+    .then(questions => {
+      return User
+        .find()
+        .then(users => {
+          users.forEach(user => {
 
-        queue.create('send-email', {
-          email: user.email
-        }).save()
-      })
+            queue.create('send-email', {
+              email: user.email,
+              title: questions[0].title,
+              description: questions[0].description
+            }).save()
+          })
+        })
     })
+
+
 })
 
 queue.process('send-email', (job, done) => {
-  nodeMail(job.data.email)
+  nodeMail(job.data.email, job.data.title, job.data.description)
   console.log('email sent to', job.data.email)
   done()
 })

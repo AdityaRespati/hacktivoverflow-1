@@ -2,7 +2,7 @@
   <div>
     <v-card>
       <v-layout align-center justify-space-between row>
-        <h1 class="display-1 font-weight-thin mt-4 mb-3">results</h1>
+        <h1 class="display-1 font-weight-thin mt-4 mb-3">results for "{{$route.query.title ? $route.query.title : $route.query.tag}}"</h1>
       </v-layout>
     </v-card>
     <hr>
@@ -48,12 +48,32 @@ export default {
 
   created() {
     this.getAllQuestions();
-    console.log(this.$route.query.title)
   },
   computed: {
     ...mapState(["allQuestions"]),
     searchResults() {
+      if (this.$route.query.title) {
+        let q = new RegExp(this.$route.query.title.toLowerCase());
 
+        var list = this.allQuestions.filter(function(el) {
+          return el.title.toLowerCase().match(q);
+        });
+
+        return list;
+      } else if(this.$route.query.tag){
+        let q = new RegExp(this.$route.query.tag.toLowerCase());
+        let result = []
+
+        this.allQuestions.forEach(question => {
+          question.tags.map(t => t.name).forEach(tagName => {
+            if(tagName.match(q)){
+              result.push(question)
+            }
+          })
+        });
+
+        return result
+      }
     }
   },
   methods: {

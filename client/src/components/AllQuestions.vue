@@ -18,7 +18,7 @@
       <v-card>
         <v-divider></v-divider>
         <v-layout align-center justify-space-between row>
-          <h1 class="title font-weight-light ml-2 mt-4 mb-3">
+          <h1 class="display-1 font-weight-light ml-2 mt-4">
             <v-btn
               flat
               :to="{path: `question/${question._id}`, params: {id:question._id}}"
@@ -39,6 +39,13 @@
             </div>
           </v-layout>
         </v-layout>
+        <div class="text-xs-left ml-4 mb-2">
+          <v-chip
+            v-for="(tag, index) in question.tags"
+            :key="index"
+            @click.prevent="searchByTag(tag)"
+          >{{tag.name}}</v-chip>
+        </div>
         <v-divider></v-divider>
       </v-card>
     </div>
@@ -70,6 +77,10 @@ export default {
       } else {
         this.$router.push({ path: "/ask" });
       }
+    },
+    searchByTag(tag){
+      this.$router.push({path: '/search', query:{tag: tag.name}})
+      // var list = this.allQuestions.filter(question => question.tags.map(t => t.name).includes(tag.name))
     }
   }
 };
