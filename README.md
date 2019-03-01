@@ -38,4 +38,4 @@ Simple Q&A website build with MEVN (Mongoose, Vue, Express, Node.js)
 
 2. Access the client via
 
-3. Access the server via
+3. Server base URL: `http://35.185.176.138` 

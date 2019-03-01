@@ -8,7 +8,7 @@ var indexRouter = require('./routes/index');
 var app = express();
 
 //connect to mongoose
-mongoose.connect('mongodb://localhost/overflow', { useNewUrlParser: true }, (err) => {
+mongoose.connect('mongodb+srv://AdityaRespati:office2office2@mini-overflow-l1mdr.gcp.mongodb.net/test?retryWrites=true', { useNewUrlParser: true }, (err) => {
   if (err) { console.log("db connection error: ", err) }
 })
 
